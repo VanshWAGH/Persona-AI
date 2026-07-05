@@ -1,6 +1,6 @@
 # 🎭 Persona AI — Chat with Hitesh Choudhary & Piyush Garg
 
-An AI-powered chat application that uses OpenAI's GPT-4o-mini to simulate authentic conversations with two of India's most influential coding educators: **Hitesh Choudhary** and **Piyush Garg**.
+An AI-powered chat application that supports multiple LLM backends (OpenAI's GPT-4o-mini and Google's Gemini 2.5 Flash) to simulate authentic conversations with two of India's most influential coding educators: **Hitesh Choudhary** and **Piyush Garg**.
 
 > Built as a project for the **GenAI Cohort** by ChaiCode.
 
@@ -9,12 +9,13 @@ An AI-powered chat application that uses OpenAI's GPT-4o-mini to simulate authen
 ## ✨ Features
 
 - 🤖 **Dual Persona System** — Switch between Hitesh Choudhary and Piyush Garg
+- ⚙️ **Dual Model Provider** — Instantly toggle between OpenAI (GPT-4o-mini) and Google (Gemini 2.5 Flash) backends
 - 🎨 **Dynamic Theming** — Colors, gradients, and accents change with each persona
 - ⚡ **Streaming Responses** — Real-time typing effect via Server-Sent Events (SSE)
 - 📱 **Responsive Design** — Works on desktop, tablet, and mobile
 - 🌙 **Premium Dark Mode** — Glassmorphism UI with animated gradient backgrounds
 - 💬 **Context-Aware** — Maintains conversation context with sliding window management
-- 🔒 **Secure** — API key stays server-side, never exposed to the client
+- 🔒 **Secure** — API keys stay server-side, never exposed to the client
 
 ## 🛠️ Tech Stack
 
@@ -22,6 +23,7 @@ An AI-powered chat application that uses OpenAI's GPT-4o-mini to simulate authen
 |-----------|---------|
 | Next.js 15 (App Router) | Full-stack React framework |
 | OpenAI GPT-4o-mini | LLM for persona-based responses |
+| Gemini 2.5 Flash | Alternative LLM for responses |
 | Vanilla CSS | Premium custom design system |
 | Server-Sent Events | Real-time streaming |
 | Google Fonts (Inter + JetBrains Mono) | Typography |
@@ -30,7 +32,8 @@ An AI-powered chat application that uses OpenAI's GPT-4o-mini to simulate authen
 
 - **Node.js** 18+ installed
 - **npm** package manager
-- **OpenAI API Key** — Get one at [platform.openai.com](https://platform.openai.com)
+- **OpenAI API Key** (optional if using Gemini) — Get one at [platform.openai.com](https://platform.openai.com)
+- **Google Gemini API Key** (optional if using OpenAI) — Get one at [aistudio.google.com](https://aistudio.google.com)
 
 ## 🚀 Setup & Run Instructions
 
@@ -53,6 +56,7 @@ Create a `.env.local` file in the root directory:
 
 ```env
 OPENAI_API_KEY=sk-your-openai-api-key-here
+GEMINI_API_KEY=your-gemini-api-key-here
 ```
 
 ### 4. Run the Development Server
@@ -67,42 +71,32 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ```bash
 npm run build
-npm start
 ```
-
-## 🌐 Deployment (Vercel)
-
-The easiest way to deploy is via [Vercel](https://vercel.com):
-
-1. Push your code to GitHub
-2. Import the repository on Vercel
-3. Add `OPENAI_API_KEY` as an environment variable in Vercel's dashboard
-4. Deploy!
 
 ## 📁 Project Structure
 
 ```
 persona-ai/
-├── .env.local                    # OpenAI API key (git-ignored)
+├── .env.local                    # API keys (git-ignored)
 ├── src/
 │   ├── app/
 │   │   ├── layout.js             # Root layout with fonts & SEO
 │   │   ├── page.js               # Main chat page
 │   │   ├── globals.css           # Complete design system
-│   │   └── api/chat/route.js     # Streaming OpenAI API endpoint
+│   │   └── api/chat/route.js     # Streaming OpenAI & Gemini API endpoint
 │   ├── components/
 │   │   ├── ChatWindow.js         # Main orchestrator component
 │   │   ├── MessageList.js        # Scrollable message display
 │   │   ├── MessageBubble.js      # Individual message with markdown
 │   │   ├── ChatInput.js          # Text input with auto-resize
-│   │   ├── PersonaSwitcher.js    # Persona selection sidebar
-│   │   ├── Header.js             # Chat header with persona info
-│   │   └── WelcomeScreen.js      # Landing screen with starters
+│   │   ├── PersonaSwitcher.js    # Persona selection sidebar & API toggle
+│   │   └── Header.js             # Chat header with persona info
 │   ├── hooks/
 │   │   └── useChat.js            # Chat state & streaming hook
 │   └── lib/
 │       ├── personas.js           # Persona definitions & prompts
-│       └── openai.js             # OpenAI client configuration
+│       ├── openai.js             # OpenAI client configuration
+│       └── gemini.js             # Gemini client configuration
 ├── public/images/                # Persona avatars
 ├── DOCUMENTATION.md              # Technical documentation
 └── README.md                     # This file
